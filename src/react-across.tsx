@@ -16,7 +16,7 @@ export function registerComponent({ identifier, Component }: { identifier: strin
 }
 
 const App: React.FC = () => {
-  const [_, setCounter] = React.useState(0);
+  const [, setCounter] = React.useState(0);
   const forceRender = React.useCallback(() => setCounter(i => i + 1), []);
 
   React.useEffect(() => {
