@@ -17,6 +17,7 @@
     "lint": "tsdx lint",
     "prepare": "tsdx build",
     "storybook": "start-storybook -p 6006",
+    "release": "np",
     "build-storybook": "build-storybook"
   },
   "peerDependencies": {
