@@ -1,6 +1,9 @@
 {
+  "name": "@foreachbe/react-across",
   "version": "0.1.1",
   "license": "MIT",
+  "author": "Simon VDB",
+  "module": "dist/react-across.esm.js",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "files": [
@@ -24,23 +27,6 @@
     "react": ">=16",
     "react-dom": ">=16"
   },
-  "husky": {
-    "hooks": {
-      "pre-commit": "tsdx lint"
-    }
-  },
-  "prettier": {
-    "printWidth": 80,
-    "semi": true,
-    "singleQuote": true,
-    "trailingComma": "es5"
-  },
-  "name": "@foreachbe/react-across",
-  "publishConfig": {
-    "access": "public",
-  },
-  "author": "Simon VDB",
-  "module": "dist/react-across.esm.js",
   "devDependencies": {
     "@babel/core": "^7.10.4",
     "@storybook/addon-actions": "^5.3.19",
@@ -62,5 +48,19 @@
     "tsdx": "^0.13.2",
     "tslib": "^2.0.0",
     "typescript": "^3.9.6"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "tsdx lint"
+    }
+  },
+  "prettier": {
+    "printWidth": 80,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
