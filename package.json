@@ -35,7 +35,10 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "name": "react-across",
+  "name": "@foreachbe/react-across",
+  "publishConfig": {
+    "access": "public",
+  },
   "author": "Simon VDB",
   "module": "dist/react-across.esm.js",
   "devDependencies": {
