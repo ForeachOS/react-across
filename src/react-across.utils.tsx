@@ -1,10 +1,10 @@
-import * as React from "react";
+import * as React from 'react';
 
 export type AcrossComponent<T extends {} = any> = React.FC<{ data: T }>;
 
 export class ErrorBoundary extends React.Component {
   state = {
-    hasError: false
+    hasError: false,
   };
 
   static getDerivedStateFromError() {
@@ -20,7 +20,7 @@ export class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <p style={{ margin: "0 auto" }}>Something went wrong.</p>;
+      return <p style={{ margin: '0 auto' }}>Something went wrong.</p>;
     }
 
     return this.props.children;
@@ -34,12 +34,12 @@ function prefixMessage(msg: string) {
 export const logger = {
   log: (msg: string) => console.log(prefixMessage(msg)),
   warn: (msg: string) => console.warn(prefixMessage(msg)),
-  error: (msg: string) => console.error(prefixMessage(msg))
+  error: (msg: string) => console.error(prefixMessage(msg)),
 };
 
 export function getBackendProps<T extends {}>(el: Element): Partial<T> {
   if (el === null) return {};
 
-  const dataProps = el.getAttribute("data-props");
+  const dataProps = el.getAttribute('data-props');
   return dataProps ? JSON.parse(dataProps) : {};
 }

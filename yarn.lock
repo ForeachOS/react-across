@@ -1142,6 +1142,13 @@
   resolved "https://registry.yarnpkg.com/@emotion/weak-memoize/-/weak-memoize-0.2.5.tgz#8eed982e2ee6f7f4e44c253e12962980791efd46"
   integrity sha512-6U71C2Wp7r5XtFtQzYrW5iKFT67OixrSxjI4MptCHzdSVlgabczzqLe0ZSgnub/5Kp4hSbpDB1tMytZY9pwxxA==
 
+"@foreachbe/eslint-config-react-app@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@foreachbe/eslint-config-react-app/-/eslint-config-react-app-6.0.0.tgz#612083d56d292e0c3ab021792a4ec164f4796a1c"
+  integrity sha512-0UbsTW1We742+t2Wvp4Zc7pTMCBbHOPL3zOJaz1hSWa5XFUjr/gug5N7ZzfMbo85mzHlCOAiTEMA2AyAlETxFg==
+  dependencies:
+    confusing-browser-globals "^1.0.9"
+
 "@jest/console@^24.7.1", "@jest/console@^24.9.0":
   version "24.9.0"
   resolved "https://registry.yarnpkg.com/@jest/console/-/console-24.9.0.tgz#79b1bc06fb74a8cfb01cbdedf945584b1b9707f0"
