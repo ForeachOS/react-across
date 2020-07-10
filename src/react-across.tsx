@@ -1,5 +1,8 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import warning from 'tiny-warning';
+import { v4 as uuidv4 } from 'uuid';
+
 import {
   ErrorBoundary,
   getBackendProps,
@@ -27,30 +30,50 @@ export function registerComponent({
   knownElements.set(identifier, Component);
 }
 
+let forceRender = () => {};
+
+export function triggerUpdate() {
+  forceRender();
+}
+
+function getWidgets() {
+  const widgets = document.querySelectorAll<HTMLDivElement>('[data-component]');
+  widgets.forEach(el => {
+    if (!el.dataset.acrossReactId) {
+      el.dataset.acrossReactId = uuidv4();
+    }
+  });
+
+  return Array.from(widgets);
+}
+
 const App: React.FC = () => {
   const [, setCounter] = React.useState(0);
-  const forceRender = React.useCallback(() => setCounter(i => i + 1), []);
+  const triggerRender = React.useCallback(() => setCounter(i => i + 1), []);
 
   React.useEffect(() => {
-    //@ts-ignore
-    window.forceRender = forceRender;
-  }, [forceRender]);
+    forceRender = triggerRender;
+  }, [triggerRender]);
 
-  const nodes = Array.from(document.querySelectorAll('[data-component]'));
+  const nodes = getWidgets();
 
   return (
     <React.Suspense fallback={defaultLoader}>
       {nodes.map(DOMNode => {
-        const componentId = DOMNode.getAttribute('data-id');
-        if (!componentId) return logger.error(`Elements need an unique id!`);
+        const componentId = DOMNode.dataset.acrossReactId;
+
+        warning(componentId, `Elements need an unique id!`);
 
         const componentName = DOMNode.getAttribute('data-component')!;
         const Component = knownElements.get(componentName);
 
-        if (!Component)
-          return logger.error(
+        if (!Component) {
+          warning(
+            Component,
             `Tried to render unknown element with identifier: ${componentName}`
           );
+          return null;
+        }
 
         const dataProps = getBackendProps(DOMNode);
         return ReactDOM.createPortal(

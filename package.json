@@ -23,9 +23,13 @@
     "release": "np",
     "build-storybook": "build-storybook"
   },
+  "dependencies": {
+    "tiny-warning": "^1.0.3"
+  },
   "peerDependencies": {
     "react": ">=16",
-    "react-dom": ">=16"
+    "react-dom": ">=16",
+    "uuid": "8.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.4",
@@ -38,6 +42,7 @@
     "@storybook/react": "^5.3.19",
     "@types/react": "^16.9.41",
     "@types/react-dom": "^16.9.8",
+    "@types/uuid": "^8.0.0",
     "babel-loader": "^8.1.0",
     "husky": "^4.2.5",
     "np": "^6.3.1",
@@ -60,6 +65,9 @@
     "semi": true,
     "singleQuote": true,
     "trailingComma": "es5"
+  },
+  "eslintConfig": {
+    "extends": "@foreachbe/eslint-config-react-app"
   },
   "publishConfig": {
     "access": "public"
