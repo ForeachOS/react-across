@@ -37,9 +37,24 @@ export const logger = {
   error: (msg: string) => console.error(prefixMessage(msg)),
 };
 
-export function getBackendProps<T extends {}>(el: Element): Partial<T> {
+function lowercaseFirstLetter(str: string) {
+  return str.charAt(0).toLowerCase() + str.slice(1);
+}
+
+export function getBackendProps<T extends {}>(el: HTMLElement): Partial<T> {
   if (el === null) return {};
 
-  const dataProps = el.getAttribute('data-props');
-  return dataProps ? JSON.parse(dataProps) : {};
+  if (el.dataset['props']) {
+    return JSON.parse(el.dataset['props']);
+  }
+
+  const propNames = Object.getOwnPropertyNames(el.dataset).filter(name =>
+    name.startsWith('props')
+  );
+
+  return propNames.reduce<{ [x: string]: string | undefined}>((obj, name) => {
+    const attrName = lowercaseFirstLetter(name.replace("props", ""));
+    obj[attrName] = el.dataset[name];
+    return obj;
+  }, {}) as T;
 }
