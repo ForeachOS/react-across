@@ -1,6 +1,6 @@
 {
   "name": "@foreachbe/react-across",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "license": "MIT",
   "author": "Simon VDB",
   "module": "dist/react-across.esm.js",
