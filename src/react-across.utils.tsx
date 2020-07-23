@@ -1,31 +1,18 @@
-import * as React from 'react';
+import * as React from "react";
+import { FallbackProps } from 'react-error-boundary';
 
 export type AcrossComponent<T extends {} = any> = React.FC<{ data: T }>;
 
-export class ErrorBoundary extends React.Component {
-  state = {
-    hasError: false,
-  };
-
-  static getDerivedStateFromError() {
-    // Update state so the next render will show the fallback UI.
-    return { hasError: true };
-  }
-
-  componentDidCatch(error: any, errorInfo: any) {
-    // You can also log the error to an error reporting service
-    console.error(error);
-    console.error(errorInfo);
-  }
-
-  render() {
-    if (this.state.hasError) {
-      return <p style={{ margin: '0 auto' }}>Something went wrong.</p>;
-    }
-
-    return this.props.children;
-  }
+export function ErrorFallback({error, componentStack}: FallbackProps) {
+  return (
+    <div role="alert">
+      <p>Something went wrong:</p>
+      <pre>{error?.message}</pre>
+      <pre>{componentStack}</pre>
+    </div>
+  )
 }
+
 
 function prefixMessage(msg: string) {
   return `REACT-ACROSS: ${msg}`;
@@ -34,7 +21,7 @@ function prefixMessage(msg: string) {
 export const logger = {
   log: (msg: string) => console.log(prefixMessage(msg)),
   warn: (msg: string) => console.warn(prefixMessage(msg)),
-  error: (msg: string) => console.error(prefixMessage(msg)),
+  error: (msg: string) => console.error(prefixMessage(msg))
 };
 
 function lowercaseFirstLetter(str: string) {
@@ -44,15 +31,13 @@ function lowercaseFirstLetter(str: string) {
 export function getBackendProps<T extends {}>(el: HTMLElement): Partial<T> {
   if (el === null) return {};
 
-  if (el.dataset['props']) {
-    return JSON.parse(el.dataset['props']);
+  if (el.dataset["props"]) {
+    return JSON.parse(el.dataset["props"]);
   }
 
-  const propNames = Object.getOwnPropertyNames(el.dataset).filter(name =>
-    name.startsWith('props')
-  );
+  const propNames = Object.getOwnPropertyNames(el.dataset).filter(name => name.startsWith("props"));
 
-  return propNames.reduce<{ [x: string]: string | undefined}>((obj, name) => {
+  return propNames.reduce<{ [x: string]: string | undefined }>((obj, name) => {
     const attrName = lowercaseFirstLetter(name.replace("props", ""));
     obj[attrName] = el.dataset[name];
     return obj;

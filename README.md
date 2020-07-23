@@ -2,9 +2,9 @@
 
 
 ## API:
-- `triggerUpdate`: Requery the page and initialize new widgets.
+- `hydrate`: Requery the page and initialize new widgets.
 ```ts
-function triggerUpdate(): void;
+function hydrate(): void;
 ```
 
 - `render`: Alternative to `ReactDOM.render()`
@@ -18,12 +18,13 @@ interface Renderer {
 function render({ container, Wrapper, callback, }: Renderer): void;
 ```
 
-- `registerComponent`: Used to register React components
+- `registerComponent`: Used to register React components, can optionally pass in a loader element that will be displayed when the element is fetched.
 ```ts
 type LazyReactEl = React.LazyExoticComponent<AcrossComponent>;
- function registerComponent({ identifier, Component, }: {
+ function registerComponent({ identifier, Component, Loader }: {
     identifier: string;
     Component: LazyReactEl;
+    Loader?: React.ReactNode;
 }): void;
 ```
 
