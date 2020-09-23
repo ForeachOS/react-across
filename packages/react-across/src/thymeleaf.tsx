@@ -37,7 +37,7 @@ export function StaticContent({
   if (render) {
     return React.createElement(element, {
       ...props,
-      children
+      children,
     });
   }
 
@@ -46,6 +46,6 @@ export function StaticContent({
     ...props,
     ref,
     suppressHydrationWarning: true,
-    dangerouslySetInnerHTML: { __html: "" }
+    dangerouslySetInnerHTML: { __html: "" },
   });
 }

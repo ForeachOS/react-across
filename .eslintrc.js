@@ -1,3 +1,3 @@
 module.exports = {
-  extends: '@foreachbe/eslint-config-react-app',
+  extends: "@foreachbe/eslint-config-react-app",
 };

@@ -15,8 +15,8 @@ export function useAcrossPartial(url: string, didMount: DidMount = null) {
 
   const updatePartial = React.useCallback(() => {
     fetch(url)
-      .then(response => response.text())
-      .then(res => setHtml(res));
+      .then((response) => response.text())
+      .then((res) => setHtml(res));
   }, [url]);
 
   React.useEffect(() => {

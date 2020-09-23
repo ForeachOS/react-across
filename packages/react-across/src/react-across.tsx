@@ -31,7 +31,7 @@ export function hydrate() {
 
 function getWidgets() {
   const widgets = document.querySelectorAll<HTMLDivElement>("[data-component]");
-  widgets.forEach(el => {
+  widgets.forEach((el) => {
     if (!el.dataset.acrossReactId) {
       el.dataset.acrossReactId = uuidv4();
     }
@@ -42,7 +42,7 @@ function getWidgets() {
 
 const App: React.FC = () => {
   const [, setCounter] = React.useState(0);
-  const triggerRender = React.useCallback(() => setCounter(i => i + 1), []);
+  const triggerRender = React.useCallback(() => setCounter((i) => i + 1), []);
 
   React.useEffect(() => {
     forceRender = triggerRender;
@@ -52,7 +52,7 @@ const App: React.FC = () => {
 
   return (
     <React.Suspense fallback={null}>
-      {nodes.map(DOMNode => {
+      {nodes.map((DOMNode) => {
         const componentId = DOMNode.dataset.acrossReactId;
 
         warning(componentId, `Elements need an unique id!`);

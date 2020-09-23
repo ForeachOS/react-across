@@ -1,97 +1,72 @@
 {
-  "name": "@foreachbe/react-across",
-  "version": "0.5.0",
+  "name": "react-across-monorepo",
+  "version": "1.0.0",
   "license": "MIT",
-  "author": "Simon VDB",
-  "module": "dist/react-across.esm.js",
-  "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
-  "files": [
-    "dist",
-    "src"
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
-  "engines": {
-    "node": ">=10"
-  },
   "scripts": {
-    "start": "tsdx watch",
-    "build": "tsdx build",
-    "test": "tsdx test --passWithNoTests",
-    "lint": "tsdx lint",
-    "format": "prettier --write \"example/**/*.{js,jsx,ts,tsx,json,md,scss,css,sass}\" && eslint ./src --max-warnings=0 --ext .ts,.tsx,.js,.jsx --fix",
-    "prepare": "tsdx build",
-    "storybook": "start-storybook -p 6006",
-    "release": "np",
-    "build-storybook": "build-storybook",
-    "postinstall": "patch-package"
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md,scss,sass}\"",
+    "lint": "eslint . --max-warnings=0 --ext .ts,.tsx,.js",
+    "test": "jest",
+    "type-check": "yarn workspaces run tsc --pretty --noEmit",
+    "test-all": "yarn lint && yarn type-check && yarn test",
+    "build": "preconstruct build",
+    "postinstall": "preconstruct dev"
   },
   "dependencies": {
-    "tiny-warning": "^1.0.3"
-  },
-  "peerDependencies": {
-    "react": ">=16.13",
-    "react-dom": ">=16.13",
-    "react-error-boundary": ">=2",
-    "uuid": ">=8.2.0"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@foreachbe/eslint-config-react-app": "^6.0.0",
-    "@storybook/addon-actions": "^5.3.19",
-    "@storybook/addon-docs": "^5.3.19",
-    "@storybook/addon-info": "^5.3.19",
-    "@storybook/addon-links": "^5.3.19",
-    "@storybook/addons": "^5.3.19",
-    "@storybook/react": "^5.3.19",
-    "@types/react": "^16.9.43",
-    "@types/react-dom": "^16.9.8",
-    "@types/uuid": "^8.0.0",
-    "@typescript-eslint/eslint-plugin": "^3.7.0",
-    "@typescript-eslint/parser": "^3.7.0",
+    "@babel/core": "^7.11.6",
+    "@babel/preset-env": "^7.11.5",
+    "@babel/preset-react": "^7.10.4",
+    "@babel/preset-typescript": "^7.10.4",
+    "@foreachbe/eslint-config-react-app": "^7.0.0",
+    "@preconstruct/cli": "^1.1.27",
+    "@types/jest": "^26.0.14",
+    "@typescript-eslint/eslint-plugin": "^4.2.0",
+    "@typescript-eslint/parser": "^4.2.0",
     "babel-eslint": "^10.1.0",
-    "babel-loader": "^8.1.0",
-    "eslint": "^7.5.0",
+    "babel-plugin-dev-expression": "0.2.2",
+    "eslint": "^7.9.0",
     "eslint-plugin-flowtype": "^5.2.0",
     "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-jest": "^24.0.2",
     "eslint-plugin-jsx-a11y": "^6.3.1",
-    "eslint-plugin-react": "^7.20.3",
-    "eslint-plugin-react-hooks": "^4.0.8",
+    "eslint-plugin-react": "^7.21.0",
+    "eslint-plugin-react-hooks": "^4.1.2",
     "husky": "^4.2.5",
+    "jest": "^26.4.2",
     "lint-staged": "^10.2.11",
-    "np": "^6.3.1",
-    "patch-package": "^6.2.2",
-    "postinstall-postinstall": "^2.1.0",
+    "prettier": "^2.1.2",
     "react": "^16.13.1",
-    "react-docgen-typescript-loader": "^3.7.2",
     "react-dom": "^16.13.1",
     "react-error-boundary": "^2.3.0",
-    "react-is": "^16.13.1",
-    "ts-loader": "^8.0.0",
-    "tsdx": "^0.13.2",
-    "tslib": "^2.0.0",
-    "typescript": "^3.9.6"
+    "typescript": "^4.0.3",
+    "uuid": "^8.3.0"
+  },
+  "devDependencies": {
+    "@types/react": "^16.9.43",
+    "@types/react-dom": "^16.9.8",
+    "@types/uuid": "^8.3.0"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "tsdx lint"
+      "pre-commit": "lint-staged",
+      "pre-push": "yarn run type-check"
     }
   },
   "lint-staged": {
-    "*.{ts,tsx,js,jsx}": [
-      "prettier --write",
-      "eslint --fix"
-    ],
-    "*.{json,md,scss}": [
-      "prettier --write"
+    "*.@(js|jsx|ts|tsx)": [
+      "yarn lint",
+      "yarn format"
     ]
-  },
-  "np": {
-    "releaseDraft": true
   },
   "prettier": {
     "printWidth": 120
   },
-  "publishConfig": {
-    "access": "public"
+  "preconstruct": {
+    "packages": [
+      "packages/*"
+    ]
   }
 }
