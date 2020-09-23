@@ -8,12 +8,17 @@
   ],
   "scripts": {
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md,scss,sass}\"",
-    "lint": "eslint . --max-warnings=0 --ext .ts,.tsx,.js,.jsx",
+    "lint": "yarn lint:check --fix",
+    "lint:check": "eslint . --max-warnings=0 --ext .ts,.tsx,.js,.jsx",
     "test": "jest",
+    "test:coverage": "jest --coverage",
     "type-check": "yarn workspaces run tsc --pretty --noEmit",
-    "test-all": "yarn lint && yarn type-check && yarn test",
+    "test-all": "yarn lint:check && yarn type-check && yarn test",
     "build": "preconstruct build",
-    "postinstall": "preconstruct dev"
+    "postinstall": "preconstruct dev",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "yarn build && changeset publish"
   },
   "dependencies": {
     "react": "^16.13.1",
@@ -26,6 +31,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-react": "^7.10.4",
     "@babel/preset-typescript": "^7.10.4",
+    "@changesets/cli": "^2.10.3",
     "@foreachbe/eslint-config-react-app": "^7.0.0",
     "@preconstruct/cli": "^1.1.27",
     "@types/jest": "^26.0.14",
