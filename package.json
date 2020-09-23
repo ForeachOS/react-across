@@ -22,7 +22,8 @@
     "prepare": "tsdx build",
     "storybook": "start-storybook -p 6006",
     "release": "np",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "tiny-warning": "^1.0.3"
@@ -31,7 +32,7 @@
     "react": ">=16.13",
     "react-dom": ">=16.13",
     "react-error-boundary": ">=2",
-    "uuid": "8.2.0"
+    "uuid": ">=8.2.0"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
@@ -58,6 +59,8 @@
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "np": "^6.3.1",
+    "patch-package": "^6.2.2",
+    "postinstall-postinstall": "^2.1.0",
     "react": "^16.13.1",
     "react-docgen-typescript-loader": "^3.7.2",
     "react-dom": "^16.13.1",
