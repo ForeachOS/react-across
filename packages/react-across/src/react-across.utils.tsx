@@ -3,12 +3,11 @@ import { FallbackProps } from "react-error-boundary";
 
 export type AcrossComponent<T extends {} = any> = React.FC<{ data: T }>;
 
-export function ErrorFallback({ error, componentStack }: FallbackProps) {
+export function ErrorFallback({ error }: FallbackProps) {
   return (
     <div role="alert">
       <p>Something went wrong:</p>
       <pre>{error?.message}</pre>
-      <pre>{componentStack}</pre>
     </div>
   );
 }
