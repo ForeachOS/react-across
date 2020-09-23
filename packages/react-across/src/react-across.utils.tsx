@@ -1,18 +1,17 @@
 import * as React from "react";
-import { FallbackProps } from 'react-error-boundary';
+import { FallbackProps } from "react-error-boundary";
 
 export type AcrossComponent<T extends {} = any> = React.FC<{ data: T }>;
 
-export function ErrorFallback({error, componentStack}: FallbackProps) {
+export function ErrorFallback({ error, componentStack }: FallbackProps) {
   return (
     <div role="alert">
       <p>Something went wrong:</p>
       <pre>{error?.message}</pre>
       <pre>{componentStack}</pre>
     </div>
-  )
+  );
 }
-
 
 function prefixMessage(msg: string) {
   return `REACT-ACROSS: ${msg}`;
@@ -21,7 +20,7 @@ function prefixMessage(msg: string) {
 export const logger = {
   log: (msg: string) => console.log(prefixMessage(msg)),
   warn: (msg: string) => console.warn(prefixMessage(msg)),
-  error: (msg: string) => console.error(prefixMessage(msg))
+  error: (msg: string) => console.error(prefixMessage(msg)),
 };
 
 function lowercaseFirstLetter(str: string) {
@@ -35,7 +34,7 @@ export function getBackendProps<T extends {}>(el: HTMLElement): Partial<T> {
     return JSON.parse(el.dataset["props"]);
   }
 
-  const propNames = Object.getOwnPropertyNames(el.dataset).filter(name => name.startsWith("props"));
+  const propNames = Object.getOwnPropertyNames(el.dataset).filter((name) => name.startsWith("props"));
 
   return propNames.reduce<{ [x: string]: string | undefined }>((obj, name) => {
     const attrName = lowercaseFirstLetter(name.replace("props", ""));
