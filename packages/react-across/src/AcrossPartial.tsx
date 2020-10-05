@@ -1,33 +1,30 @@
 import * as React from "react";
 
-type DidMount = ((ref: HTMLDivElement) => void) | null;
-
-interface AcrossPartialProps {
-  url: string;
-  didMount?: DidMount;
-}
-
-export function useAcrossPartial(url: string, didMount: DidMount = null) {
+export function useAcrossPartial<T extends HTMLElement = HTMLDivElement>(
+  fetchHtmlFn: () => Promise<string>,
+  onUpdate: ((ref: T) => void) | null = null
+) {
   const [html, setHtml] = React.useState<string>();
 
-  const ref = React.useRef<HTMLDivElement>(null);
-  const didMountRef = React.useRef(didMount);
+  const ref = React.useRef<T>(null);
+  const onUpdateRef = React.useRef(onUpdate);
 
   const updatePartial = React.useCallback(() => {
-    fetch(url)
-      .then((response) => response.text())
-      .then((res) => setHtml(res));
-  }, [url]);
+    fetchHtmlFn().then((res) => setHtml(res));
+  }, [fetchHtmlFn]);
 
   React.useEffect(() => {
-    didMountRef.current = didMount;
-  }, [didMount]);
+    // Keep latest onupdate fn in ref.
+    onUpdateRef.current = onUpdate;
+  }, [onUpdate]);
 
   React.useEffect(() => {
-    ref.current && didMountRef.current?.(ref.current);
+    // trigger onUpdate when html changes
+    ref.current && onUpdateRef.current?.(ref.current);
   }, [html]);
 
   React.useEffect(() => {
+    // run fetchHtmlFn whenever reference of this fn changes.
     updatePartial();
   }, [updatePartial]);
 
@@ -37,8 +34,13 @@ export function useAcrossPartial(url: string, didMount: DidMount = null) {
 /**
  * Experimental Component to render partial info
  */
-export function AcrossPartial({ url, didMount }: AcrossPartialProps) {
-  const [html, ref] = useAcrossPartial(url, didMount);
+interface AcrossPartialProps<T extends HTMLElement = HTMLDivElement> {
+  fetchHtmlFn: () => Promise<string>;
+  onUpdate?: ((ref: T) => void) | null;
+}
+
+export function AcrossPartial({ fetchHtmlFn, onUpdate }: AcrossPartialProps) {
+  const [html, ref] = useAcrossPartial(fetchHtmlFn, onUpdate);
 
   if (!html) return null;
   return <div ref={ref} dangerouslySetInnerHTML={{ __html: html }}></div>;

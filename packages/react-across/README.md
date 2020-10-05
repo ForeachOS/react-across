@@ -28,12 +28,15 @@ function registerComponent({
   identifier,
   Component,
   Loader,
+  errorBoundaryProps,
 }: {
   identifier: string;
-  Component: LazyReactEl;
+  Component: React.LazyExoticComponent<AcrossComponent> | AcrossComponent;
+  errorBoundaryProps?: ErrorBoundaryProps // See: https://github.com/bvaughn/react-error-boundary
   Loader?: React.ReactNode;
 }): void;
 ```
+Components imported using `React.lazy` will be loaded on demand, regular imports will result in the component included in the main bundle.
 
 ## Usage
 
@@ -59,5 +62,8 @@ render({ container: rootEl });
 Add HTML with the following markup to get hydrated with react widgets:
 
 ```html
-<div data-component="my-cool-widget"></div>
+<!-- Somewhere in the dom -->
+<div id="root"></div>
+<!-- Somewhere else on the page. -->
+<div data-component="my-cool-widget" data-props-test="value to be passed to react"></div>
 ```

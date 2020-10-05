@@ -13,11 +13,9 @@
   "engines": {
     "node": ">=10"
   },
-  "scripts": {
-    "type-check": "tsc --pretty --noEmit"
-  },
   "dependencies": {
-    "tiny-warning": "^1.0.3"
+    "tiny-warning": "^1.0.3",
+    "tiny-invariant": "^1.1.0"
   },
   "peerDependencies": {
     "react": ">=16.13",

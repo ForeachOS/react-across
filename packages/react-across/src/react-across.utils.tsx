@@ -3,7 +3,7 @@ import { FallbackProps } from "react-error-boundary";
 
 export type AcrossComponent<T extends {} = any> = React.FC<{ data: T }>;
 
-export function ErrorFallback({ error }: FallbackProps) {
+function DefaultErrorFallback({ error }: FallbackProps) {
   return (
     <div role="alert">
       <p>Something went wrong:</p>
@@ -12,15 +12,7 @@ export function ErrorFallback({ error }: FallbackProps) {
   );
 }
 
-function prefixMessage(msg: string) {
-  return `REACT-ACROSS: ${msg}`;
-}
-
-export const logger = {
-  log: (msg: string) => console.log(prefixMessage(msg)),
-  warn: (msg: string) => console.warn(prefixMessage(msg)),
-  error: (msg: string) => console.error(prefixMessage(msg)),
-};
+export const defaultErrorBoundaryProps = { FallbackComponent: DefaultErrorFallback };
 
 function lowercaseFirstLetter(str: string) {
   return str.charAt(0).toLowerCase() + str.slice(1);
