@@ -1,29 +1,28 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+
 import warning from "tiny-warning";
+import invariant from "tiny-invariant";
 import { v4 as uuidv4 } from "uuid";
-import { ErrorBoundary } from "react-error-boundary";
+import { ErrorBoundary, ErrorBoundaryProps } from "react-error-boundary";
 
-import { ErrorFallback, getBackendProps, logger, AcrossComponent } from "./react-across.utils";
-
-type LazyReactEl = React.LazyExoticComponent<AcrossComponent>;
-type LoaderEl = React.SuspenseProps["fallback"];
+import { defaultErrorBoundaryProps, getBackendProps, AcrossComponent } from "./react-across.utils";
 
 interface RegisterAcrossElement {
   identifier: string;
-  Component: LazyReactEl;
-  Loader?: LoaderEl;
+  Component: React.LazyExoticComponent<AcrossComponent> | AcrossComponent;
+  errorBoundaryProps?: ErrorBoundaryProps;
+  Loader?: React.SuspenseProps["fallback"];
 }
 
-const knownElements = new Map<string, { Component: LazyReactEl; Loader: LoaderEl }>();
+const knownElements = new Map<string, Omit<RegisterAcrossElement, "identifier">>();
 
-export function registerComponent({ identifier, Component, Loader = null }: RegisterAcrossElement) {
-  if (knownElements.has(identifier)) logger.warn(`There was already a registered item with key: ${identifier}`);
-
-  knownElements.set(identifier, { Component, Loader });
+export function registerComponent({ identifier, ...data }: RegisterAcrossElement) {
+  warning(!knownElements.has(identifier), `REACT-ACROSS: There was already a registered item with key: ${identifier}`);
+  knownElements.set(identifier, data);
 }
 
-let forceRender = () => warning(true, `Called 'hydrate' when application has not been initialised yet!`);
+let forceRender = () => invariant(false, `Called 'hydrate' when application has not been initialised yet!`);
 
 export function hydrate() {
   forceRender();
@@ -51,25 +50,24 @@ const App: React.FC = () => {
   const nodes = getWidgets();
 
   return (
-    <React.Suspense fallback={null}>
+    <>
       {nodes.map((DOMNode) => {
         const componentId = DOMNode.dataset.acrossReactId;
-
-        warning(componentId, `Elements need an unique id!`);
+        warning(componentId, `React-Across: Elements need an unique id!`);
 
         const componentName = DOMNode.getAttribute("data-component")!;
         const widget = knownElements.get(componentName);
 
         if (!widget) {
-          warning(widget, `Tried to render unknown element with identifier: ${componentName}`);
+          warning(widget, `React-Across: Tried to render unknown element with identifier: ${componentName}`);
           return null;
         }
 
-        const { Component, Loader } = widget;
-
         const dataProps = getBackendProps(DOMNode);
+        const { Component, Loader = null, errorBoundaryProps = defaultErrorBoundaryProps } = widget;
+
         return ReactDOM.createPortal(
-          <ErrorBoundary FallbackComponent={ErrorFallback}>
+          <ErrorBoundary {...errorBoundaryProps}>
             <React.Suspense fallback={Loader}>
               <Component data={dataProps} />
             </React.Suspense>
@@ -78,7 +76,7 @@ const App: React.FC = () => {
           componentId
         );
       })}
-    </React.Suspense>
+    </>
   );
 };
 
@@ -91,6 +89,8 @@ interface Renderer {
 const DefaultWrapper: React.FC = ({ children }) => <>{children}</>;
 
 export function render({ container, Wrapper = DefaultWrapper, callback }: Renderer) {
+  invariant(container, `React-Across: Passed invalid container element to render, nothing will happen.`);
+
   return ReactDOM.render(
     <Wrapper>
       <App />
