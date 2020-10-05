@@ -1,0 +1,25 @@
+{
+  "name": "@foreachbe/nextjs-across",
+  "version": "0.0.0",
+  "main": "dist/nextjs-across.cjs.js",
+  "types": "dist/nextjs-across.cjs.d.ts",
+  "author": "Simon VDB",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "nextjs-across": "./bin/nextjs-across.js"
+  },
+  "dependencies": {
+    "next": "9.5.3"
+  },
+  "peerDependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "scripts": {
+    "pkg:link": "yarn link",
+    "pkg:unlink": "yarn unlink"
+  }
+}
